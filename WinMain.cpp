@@ -1,7 +1,9 @@
+
 #include <initguid.h>
 #include <windows.h>
 #include <mmdeviceapi.h>
 #include <endpointvolume.h>
+#define printf __builtin_printf
 
 INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
@@ -50,10 +52,20 @@ INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nC
         FLOAT fLevel = 0.0;
         BOOL bMute = FALSE;
 
-        if (dwModifiers == (MOD_WIN | MOD_CONTROL) && dwVk == VK_OEM_PLUS)
+        if (dwModifiers == (MOD_WIN | MOD_CONTROL))
         {
             pIAudioEndpointVolumeRender->GetMasterVolumeLevelScalar(&fLevel);
-            pIAudioEndpointVolumeRender->SetMasterVolumeLevelScalar(fLevel + 0.01f, NULL);
+            switch (dwVk)
+            {
+            case VK_OEM_PLUS:
+                fLevel += 0.01f;
+                break;
+            case VK_OEM_MINUS:
+                fLevel -= 0.01f;
+                break;
+            }
+            pIAudioEndpointVolumeRender->SetMasterVolumeLevelScalar(fLevel, NULL);
+            PlaySoundW(L"C:\\Windows\\Media\\)
         }
         else if (dwModifiers == (MOD_WIN | MOD_CONTROL) && dwVk == VK_OEM_MINUS)
         {
