@@ -12,7 +12,7 @@ INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nC
     IMMDevice *pIMMDevice = NULL;
     IAudioEndpointVolume *pIAudioEndpointVolumeRender = NULL,
                          *pIAudioEndpointVolumeCapture = NULL;
-
+                         
     CoInitialize(NULL);
     RegisterHotKey(0, 1, MOD_WIN | MOD_CONTROL, VK_OEM_PLUS);
     RegisterHotKey(0, 2, MOD_WIN | MOD_CONTROL, VK_OEM_MINUS);
@@ -65,21 +65,19 @@ INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nC
                 break;
             }
             pIAudioEndpointVolumeRender->SetMasterVolumeLevelScalar(fLevel, NULL);
-            PlaySoundW(L"C:\\Windows\\Media\\)
-        }
-        else if (dwModifiers == (MOD_WIN | MOD_CONTROL) && dwVk == VK_OEM_MINUS)
-        {
-            pIAudioEndpointVolumeRender->GetMasterVolumeLevelScalar(&fLevel);
-            pIAudioEndpointVolumeRender->SetMasterVolumeLevelScalar(fLevel - 0.01f, NULL);
+            PlaySoundW(L"C:\\Windows\\Media\\Windows Notify.wav", NULL, SND_ASYNC | SND_FILENAME);
         }
         else if (dwModifiers == (MOD_WIN | MOD_CONTROL | MOD_ALT) && dwVk == 0x4D)
         {
             pIAudioEndpointVolumeRender->GetMute(&bMute);
             pIAudioEndpointVolumeRender->SetMute(!bMute, NULL);
+            if (bMute)
+                PlaySoundW(L"C:\\Windows\\Media\\Speech Sleep.wav", NULL, SND_ASYNC | SND_FILENAME);
         }
         else if (dwModifiers == (MOD_WIN | MOD_CONTROL | MOD_SHIFT) && dwVk == 0x4D)
         {
             pIAudioEndpointVolumeCapture->GetMute(&bMute);
+            PlaySoundW(bMute ? L"C:\\Windows\\Media\\Speech On.wav" : L"C:\\Windows\\Media\\Speech Off.wav", NULL, SND_ASYNC | SND_FILENAME);
             pIAudioEndpointVolumeCapture->SetMute(!bMute, NULL);
         }
     }
