@@ -46,10 +46,11 @@ INT WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nC
     {
         if (msg.message != WM_HOTKEY)
             continue;
+        DWORD dwVk = HIWORD(msg.lParam);
         FLOAT fLevel = 0.0f;
         BOOL bMute = FALSE;
 
-        switch (HIWORD(msg.lParam))
+        switch (dwVk)
         {
         case VK_F1:
             pIAudioEndpointVolumeRender->GetMute(&bMute);
